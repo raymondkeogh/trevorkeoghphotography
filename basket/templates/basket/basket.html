@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="overlay"></div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Your Basket  <i class="fas fa-shopping-basket fa-xs"></i></h3>
+            <hr>
+        </div>
+    </div>
+    <!-- Shopping Basket details and prices -->
+    <!-- Code institute boutique ado tutorial -->
+    <div class="row">
+        <div class="col">
+            {% if basket_items %}
+                <div class="d-block d-md-none">
+                    <div class="row">
+                        <div class="col">
+                            {% include 'basket/basket-total.html'%}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% include 'basket/checkout-buttons.html'%}
+                            <p class="text-muted m-5">
+                                Details of your order can be viewed below
+                            </p>
+                        </div>
+                    </div>
+                    {% for item in basket_items %}
+                    <div class="row">
+                         <div class="col-12 col-sm-6 mb-2">
+                            {% include 'basket/product-image.html'%}
+                         </div>
+                         <div class="col-12 col-sm-6 mb-2">
+                            {% include 'basket/product-info.html'%}
+                         </div>
+                         <div class="col-12 col-sm-6 order-sm-last text-right">
+                            <p class="my-0">Unit Price: €{{ item.product.price }}</p> <p class="my-0">x  {{item.quantity}}</p> 
+                            <p class="my-0 mb-2"> <strong>Subtotal:</strong>   €{{item.item_total}}</p>
+                         </div>
+                         <div class="col-12 col-sm-6 mb-2 m-auto">
+                            {% include 'basket/quantity-form-mobile.html'%}
+                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <hr>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="btt-button shadow-sm border border-black">
+                        <a class="btt-link d-flex h-100">
+                            <i class="fas fa-arrow-up mx-auto my-auto"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive d-none d-md-block">
+                   <table class="table table-sm table-borderless basket">
+                       <thead class="text-heading">
+                           <tr>
+                               <th class="px-3" scope="col">Product Info</th>
+                               <th class="px-3" scope="col"></th>
+                               <th class="px-3" scope="col">Price</th>
+                               <th class="px-3" scope="col">Quantity</th>
+                               <th class="px-3" scope="col">Subtotal</th>
+                           </tr>
+                       </thead>
+                       {% for item in basket_items %}
+                            <tr class="basket-body">
+                                <td class="p-3 w-25">
+                                   {% include 'basket/product-image.html'%}
+                                </td>
+                                <td class="p-3">
+                                    {% include 'basket/product-info.html'%}
+                                </td>
+                                <td class="p-3">
+                                    <p class="my-0 text-right">€{{ item.product.price }}</p> <p class="my-0 text-right">x  {{item.quantity}}</p> 
+                                </td>
+                                <td class="p-3 w-25">
+                                    {% include 'basket/quantity-form.html'%}
+                                </td>
+                                <td class="p-3 text-right">
+                                    <p class="my-0">€{{item.item_total}}</p>
+                                </td>
+                            </tr>
+                       {% endfor %}
+                       <tr>
+                            {% include 'basket/basket-total.html'%}
+                       </tr>
+                       <tr>
+                        <td colspan="5" class="text-right">
+                            {% include 'basket/checkout-buttons.html'%}
+
+                        </td> 
+                        </tr>
+                   </table>
+                   <hr>
+                </div>
+            {% else %}
+                <p class="m-5">You have nothing in your basket. </p>
+                <a href="{% url 'products' %}" class="btn btn-outline-black btn-lg">
+                    <hr> 
+                    Keep shopping <i class="fas fa-arrow-right"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+
+{% include 'basket/includes/quantity_script.html' %}
+ 
+<script>
+    $(".btt-link").click(function (e) {
+        window.scrollTo(0, 0);
+    })
+</script>
+
+<script>
+    // Update quantity on click
+    $(".update-link").click(function(e) {
+        var form = $(this).prev(".update-form");
+        form.submit();
+    })
+
+    // Remove item and reload on click
+    $(".remove-item").click(function(e) {
+        var csrfToken = "{{ csrf_token }}";
+        var itemId = $(this).attr("id").split("remove_")[1];
+        var url = `/basket/remove/${itemId}`;
+        var data = {"csrfmiddlewaretoken": csrfToken};
+
+        $.post(url, data)
+         .done(function() {
+             location.reload();
+         });
+    })
+</script>
+{% endblock %}

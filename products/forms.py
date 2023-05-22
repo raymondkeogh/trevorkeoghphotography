@@ -1,0 +1,29 @@
+"""
+Product Form
+"""
+from django import forms
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import (
+    Layout, Field)
+from .models import Product, Category
+
+
+# ProductForm class take from Code Institue Boutique Ado tutorial
+class ProductForm(forms.ModelForm):
+    """
+    Product form
+    """
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        categories = Category.objects.all()
+        friendly_names = [(c.id, c.get_friendly_name()) for c in categories]
+
+        self.fields['category'].choices = friendly_names
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Field('image', css_class="btn btn-success")
+        )

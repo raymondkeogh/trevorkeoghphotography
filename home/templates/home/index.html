@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="main container">
+    <div class="carousel-container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="row">
+                            {% for product in products %} 
+                            {% if product.image_url != None and 'No%20Image' not in product.image.url %}
+                            <div class="carousel-item col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 my-auto">
+                                        <a href="{% url 'product_details' product.id %}">
+                                            <img class="card-img-top img-fluid" src="{{ product.image.url }}"
+                                                alt="{{product.name}}">
+                                        </a>
+                                    </div>
+                                    <div class="d-none d-md-block col-md-6 my-auto p-5">
+                                        <h1 class="text-uppercase">{{product.name}}</h1><br>
+                                        €{{product.price}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            {% elif "No%20Image" not in product.image.url %}
+                            <div class="carousel-item col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 my-auto carousel-image">
+                                        <a href="{% url 'product_details' product.id %}">
+                                        <img class="card-img-top img-fluid" src="{{ product.image.url }}" alt="{{product.name}}">
+                                        </a>
+                                    </div>
+                                    <div class="d-none d-md-block col-md-6 my-auto p-5">
+                                        <h1 class="text-uppercase">{{product.name}}</h1><br>
+                                        €{{product.price}}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-target="#myCarousel" data-slide="prev" aria-label="previous product">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-target="#myCarousel" data-slide="next" aria-label="next product">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div><!-- /.carousel-container -->
+
+    <hr class="featurette-divider mt-5">
+
+    <div class="container-fluid marketing">
+        <h1 class="text-center mb-sm-5 mt-sm-4">Handcrafted in Ireland</h1>
+        {% include 'includes/category-grid.html' %}
+
+        <hr class="featurette-divider mt-5">
+
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Prints</h2>
+                <p class="lead">We have worked with some of the finest artists Ireland has to offer to procure these
+                    pieces. Our featured artist Conor Hamill whose contemporary imagery is the ideal addition to any
+                    home. </p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                {% if 'No%20Image' not in prints_first.image.url%}
+                    <a href="{% url 'products' %}?category=prints"      id="prints-category" aria-label="prints category">
+                        <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                        src="{{prints_first.image.url}}" width="300" height="300" aria-label="{{prints_first.name}}" alt="{{prints_first.name}}">
+                    </a>
+                {% else %} 
+                    <a href="{% url 'products' %}?category=prints" aria-label="prints category">
+                        <img class="card-img-top img-fluid" src="https://demofree.sirv.com/products/123456/123456.jpg?profile=error-example" aria-label="{{prints_first.name}}" alt="{{prints_first.name}}"> 
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <hr class="featurette-divider mt-4">
+
+        <div class="row featurette">
+            <div class="col-md-7 order-md-2">
+                <h2 class="featurette-heading">Glassware</h2>
+                <p class="lead">From fine crystal to everyday tumblers, handblown or handcut find the finest pieces here
+                </p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                {% if 'No%20Image' not in glassware_first.image.url%}
+                    <a href="{% url 'products' %}?category=glassware" id="glassware-category" aria-label="glassware category">
+                    <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                        src="{{glassware_first.image.url}}" width="300" height="300" aria-label="{{glassware_first.name}}" alt="{{glassware_first.name}}">
+                    </a>
+                {% else %} 
+                    <a href="{% url 'products' %}?category=glassware" aria-label="glassware category">
+                    <img class="card-img-top img-fluid" src="https://demofree.sirv.com/products/123456/123456.jpg?profile=error-example" aria-label="{{glassware_first.name}}" alt="{{glassware_first.name}}">
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7">
+                <h2 class="featurette-heading">Textiles</h2>
+                <p class="lead">Irelands finest contemporary and classical interior fabrics. Our suppliers work with
+                    only the finest materials to produce uniquely beautiful pieces.</p>
+            </div>
+            <div class="col-md-5">
+                {% if 'No%20Image' not in textiles_first.image.url%}
+                    <a href="{% url 'products' %}?category=textiles" id="textiles-category" aria-label="textiles category">
+                        <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                    src="{{textiles_first.image.url}}" width="300" height="300" aria-label="{{textiles_first.name}}" alt="{{textiles_first.name}}">
+                    </a>
+                {% else %} 
+                    <a href="{% url 'products' %}?category=textiles" aria-label="textiles category">
+                        <img class="card-img-top img-fluid" src="https://demofree.sirv.com/products/123456/123456.jpg?profile=error-example" aria-label="{{textiles_first.name}}"  alt="{{textiles_first.name}}">
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <div class="row featurette">
+            <div class="col-md-7 order-md-2">
+                <h2 class="featurette-heading">Kitchenware</h2>
+                <p class="lead">Make your kitchen a feast for the senses with some of our kitchenware range. </p>
+            </div>
+            <div class="col-md-5 order-md-1">
+                {% if 'No%20Image' not in textiles_first.image.url%}
+                    <a href="{% url 'products'%}?category=kitchen" id="kitchen-category" aria-label="kitchen category">
+                        <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto"
+                        src="{{kitchen_first.image.url}}" width="300" height="300" aria-label="{{kitchen_first.name}}" alt="{{kitchen_first.name}}">
+                    </a>
+                {% else %} 
+                    <a href="{% url 'products'%}?category=kitchen" aria-label="kitchen category">
+                        <img class="card-img-top img-fluid" src="https://demofree.sirv.com/products/123456/123456.jpg?profile=error-example" aria-label="{{kitchen_first.name}}" alt="{{kitchen_first.name}}">
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <hr class="featurette-divider">
+    </div><!-- /.container-fluid marketing -->
+</div><!-- /.main container -->
+
+{% endblock %}
+
+{% block postloadjs %}
+<script>
+//    Caroursel
+    $(document).ready(function () {
+        $("#myCarousel").find(".carousel-item").first().addClass("active");
+     
+    });
+</script>
+{% endblock %}
