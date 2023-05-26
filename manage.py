@@ -2,7 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-import User
+from django.contrib.auth.models import User
 
 
 """Create Superuser Instance"""
