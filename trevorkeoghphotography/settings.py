@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import environ
+from django.contrib.auth.models import User
 
 import dj_database_url
 import cloudinary
@@ -254,6 +255,13 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASS')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+
+"""Create Superuser Instance"""
+superuser=os.environ.get("SUPERUSER"),
+superuser_email=os.environ.get("SUPERUSER_EMAIL"),
+superuser_password=os.environ.get("SUPERUSER_PASSWORD"),
+
+User.objects.create_superuser('superuser', 'superuser_email', 'superuser_password')
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

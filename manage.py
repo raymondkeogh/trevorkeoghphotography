@@ -2,15 +2,6 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from django.contrib.auth.models import User
-
-
-"""Create Superuser Instance"""
-superuser=os.environ.get("SUPERUSER"),
-superuser_email=os.environ.get("SUPERUSER_EMAIL"),
-superuser_password=os.environ.get("SUPERUSER_PASSWORD"),
-
-User.objects.create_superuser('superuser', 'superuser_email', 'superuser_password')
 
 def main():
     """Run administrative tasks."""
